@@ -13,6 +13,10 @@ export type GeneralEmoji = {
     id: string;
 };
 
+export function hasCustomEmoji(content: string): boolean {
+    return /<a?:[a-zA-Z0-9_]+:\d+>/.test(content);
+}
+
 export function replaceEmojis(
     content: string,
     fn: (emoji: GeneralEmoji) => string

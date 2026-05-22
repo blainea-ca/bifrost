@@ -8,6 +8,7 @@ import DiscordEntityResolver from '../entityResolver/DiscordEntityResolver';
 import { LinkService } from '../LinkService';
 import MessageTransformer from '../messageTransformer/MessageTransformer';
 import MetricsService from '../MetricsService';
+import { hasCustomEmoji } from '../../utils/emojis';
 
 export default class FluxerToDiscordMessageRelay extends MessageRelay<Message> {
     private readonly discordEntityResolver: DiscordEntityResolver;
@@ -64,9 +65,18 @@ export default class FluxerToDiscordMessageRelay extends MessageRelay<Message> {
                 avatarURL: message.client.user?.avatarURL() || '',
             };
         } else {
-            const discordEmojis = await this.discordEntityResolver.fetchEmojis(
-                guildLink.discordGuildId
-            );
+            // Skip the round-trip when the message has no custom emoji
+            // tokens; tolerate transient remote API failures.
+            const discordEmojis = hasCustomEmoji(message.content)
+                ? await this.discordEntityResolver
+                      .fetchEmojis(guildLink.discordGuildId)
+                      .catch((err: Error) => {
+                          logger.warn(
+                              `Could not fetch Discord emojis; relaying without translation: ${err.message}`
+                          );
+                          return [];
+                      })
+                : [];
             msg = await this.getMessageTransformer().transformMessage(
                 message,
                 discordEmojis
