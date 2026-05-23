@@ -12,7 +12,6 @@ type PendingUnlink =
     | { type: 'guild'; fluxerGuildId: string }
     | {
           type: 'channel';
-          linkId: string;
           fluxerChannelId: string;
           discordChannelId: string;
           discordWebhookId: string;
@@ -178,7 +177,7 @@ export default class UnlinkDiscordCommandHandler extends DiscordCommandHandler {
                         );
                     await this.linkService.removeChannelLinkForDiscord(
                         message.guildId!,
-                        pending.linkId
+                        pending.discordChannelId
                     );
                     await message.reply({
                         embeds: [
@@ -275,7 +274,6 @@ export default class UnlinkDiscordCommandHandler extends DiscordCommandHandler {
                 return;
             this.setPending(message.author.id, {
                 type: 'channel',
-                linkId: channelLink.linkId,
                 fluxerChannelId: id,
                 discordChannelId: channelLink.discordChannelId,
                 discordWebhookId: channelLink.discordWebhookId,
