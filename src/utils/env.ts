@@ -55,6 +55,11 @@ export const DISCORD_TOKEN = process.env.BF_DISCORD_TOKEN || '';
 export const FLUXER_APP_ID = process.env.BF_FLUXER_APP_ID || '';
 export const DISCORD_APP_ID = process.env.BF_DISCORD_APP_ID || '';
 
+// Optional override for self-hosted Fluxer instances. When unset, the client
+// uses @fluxerjs/core's default (https://api.fluxer.app). The WebSocket
+// gateway URL is auto-discovered from /gateway/bot on the same host.
+export const FLUXER_API_URL = process.env.BF_FLUXER_API_URL || null;
+
 export const DISCORD_HEALTH_URL = process.env.BF_DISCORD_HEALTH_URL || null;
 export const FLUXER_HEALTH_URL = process.env.BF_FLUXER_HEALTH_URL || null;
 
