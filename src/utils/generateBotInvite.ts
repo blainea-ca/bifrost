@@ -1,3 +1,5 @@
+import { FLUXER_WEB_URL } from './env';
+
 export const generateDiscordBotInviteLink = (
     clientId: string,
     permissions: string
@@ -9,5 +11,6 @@ export const generateFluxerBotInviteLink = (
     clientId: string,
     permissions: string
 ) => {
-    return `https://web.fluxer.app/oauth2/authorize?client_id=${clientId}&scope=bot&permissions=${permissions}`;
+    const base = FLUXER_WEB_URL ?? 'https://web.fluxer.app';
+    return `${base}/oauth2/authorize?client_id=${clientId}&scope=bot&permissions=${permissions}`;
 };

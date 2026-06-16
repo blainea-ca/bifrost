@@ -6,7 +6,7 @@ import DiscordCommandHandler, {
 import FluxerEntityResolver from '../../../services/entityResolver/FluxerEntityResolver';
 import logger from '../../../utils/logging/logger';
 import { chunkDescriptionLines, EmbedColors } from '../../../utils/embeds';
-import { DISCORD_OWNER_ID } from '../../../utils/env';
+import { DISCORD_OWNER_ID, FLUXER_WEB_URL } from '../../../utils/env';
 
 export default class ListDiscordCommandHandler extends DiscordCommandHandler {
     constructor(
@@ -34,7 +34,8 @@ export default class ListDiscordCommandHandler extends DiscordCommandHandler {
                 const fluxerName =
                     (fluxerChannel as { name?: string } | null)?.name ??
                     link.fluxerChannelId;
-                const fluxerUrl = `https://fluxer.app/channels/${fluxerGuildId}/${link.fluxerChannelId}`;
+                const fluxerBase = FLUXER_WEB_URL ?? 'https://fluxer.app';
+                const fluxerUrl = `${fluxerBase}/channels/${fluxerGuildId}/${link.fluxerChannelId}`;
                 const suffix = showLinkId ? ` | \`${link.linkId}\`` : '';
                 // Discord on left, Fluxer on right (viewing from Discord)
                 return `<#${link.discordChannelId}> ←→ [#${fluxerName}](${fluxerUrl})${suffix}\n  └ \`${link.discordChannelId}\` · \`${link.fluxerChannelId}\``;

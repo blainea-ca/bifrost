@@ -60,6 +60,14 @@ export const DISCORD_APP_ID = process.env.BF_DISCORD_APP_ID || '';
 // gateway URL is auto-discovered from /gateway/bot on the same host.
 export const FLUXER_API_URL = process.env.BF_FLUXER_API_URL || null;
 
+// Public origin for OAuth invite links and channel deep-links. Derived by
+// stripping the trailing /api from FLUXER_API_URL (self-hosted Fluxer serves
+// the app and API on the same host). null in cloud mode, where invite and
+// channel URLs live on separate subdomains and use their hardcoded defaults.
+export const FLUXER_WEB_URL = FLUXER_API_URL
+    ? FLUXER_API_URL.replace(/\/api\/?$/, '')
+    : null;
+
 export const DISCORD_HEALTH_URL = process.env.BF_DISCORD_HEALTH_URL || null;
 export const FLUXER_HEALTH_URL = process.env.BF_FLUXER_HEALTH_URL || null;
 
